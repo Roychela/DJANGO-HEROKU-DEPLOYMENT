@@ -161,7 +161,7 @@ DB_NAME='tribune'
 DB_USER='user' 
 DB_PASSWORD='password' 
 DB_HOST='127.0.0.1'
-MODE='dev' 
+MODE='prod' 
 ALLOWED_HOSTS='.herokuapp.com'  
 DISABLE_COLLECTSTATIC=1
 ```
