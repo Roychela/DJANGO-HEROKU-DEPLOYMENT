@@ -1,4 +1,4 @@
-# DJANGO-HEROKU-DEPLOYMENT
+# DJANGO-HEROKU-DEPLOYMENT FOR THE-MORINGA-TRIBUNE DJANGO APPLICATION
 
 How to Deploy Django Applications on Heroku
 ===========================================
@@ -128,17 +128,43 @@ Firts create a `.env` file and add it to `.gitignore` so you don’t commit any 
 below is an example of configurations you can add to the `.env` file.
 
 ```python
-SECRET_KEY='342s(s(!hsjd998sde8$=o4$3m!(o+kce2^97kp6#ujhi'
-DEBUG=True #set to false in production
+SECRET_KEY='342s(s(!hsjd998sde8$=o4$3m!(o+kce2^97kp6#ujhi' #Use your own secret key
+DEBUG=True  #set to false in production
 DB_NAME='tribune'
-DB_USER='user'
-DB_PASSWORD='password'
+DB_USER='user' 
+DB_PASSWORD='password' 
 DB_HOST='127.0.0.1'
 MODE='dev' #set to 'prod' in production
-ALLOWED_HOSTS='.localhost', '.herokuapp.com', '.127.0.0.1'
+ALLOWED_HOSTS='.localhost', '.herokuapp.com', '.127.0.0.1'  #Set ALLOWED_HOSTS='.herokuapp.com' in production
 DISABLE_COLLECTSTATIC=1
 ```
-Remember to remove the comments before running to avoid errors i.e set to false in production ,set to 'prod' in production
+Remember to remove the comments before running to avoid errors i.e set to false in production ,set to 'prod' in production etc. Your .env should thus look like this before running your local server or pushing to heroku i.e
+running on local server:
+
+```python
+SECRET_KEY='342s(s(!hsjd998sde8$=o4$3m!(o+kce2^97kp6#ujhi'
+DEBUG=True  
+DB_NAME='tribune'
+DB_USER='user' 
+DB_PASSWORD='password' 
+DB_HOST='127.0.0.1'
+MODE='dev' 
+ALLOWED_HOSTS='.localhost', '.herokuapp.com', '.127.0.0.1'  
+DISABLE_COLLECTSTATIC=1
+```
+pushing to heroku(production):
+
+```python
+SECRET_KEY='342s(s(!hsjd998sde8$=o4$3m!(o+kce2^97kp6#ujhi'
+DEBUG=False  
+DB_NAME='tribune'
+DB_USER='user' 
+DB_PASSWORD='password' 
+DB_HOST='127.0.0.1'
+MODE='dev' 
+ALLOWED_HOSTS='.herokuapp.com'  
+DISABLE_COLLECTSTATIC=1
+```
 We then edit `settings.py` to enable decouple to use the `.env` configurations.
 
  ```python
@@ -176,7 +202,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'news.apps.NewsConfig',
     'news',
     'bootstrap3',
 ]
@@ -217,6 +242,7 @@ WSGI_APPLICATION = 'tribune.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 ​
+# Development
 # if config('MODE')=="dev":
 #        DATABASES = {
 #        'default': {
@@ -229,7 +255,7 @@ WSGI_APPLICATION = 'tribune.wsgi.application'
 #        }
        
 #    }
-# # production
+# production
 # else:
 DATABASES = {
     'default': dj_database_url.config(
@@ -303,8 +329,41 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 django_heroku.settings(locals())
 
 ```
-To run on your local machine uncomment the following
-
+To run on your application locally  uncomment the if statement section to look like this:
+```python
+# Development
+if config('MODE')=="dev":
+        DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': config('DB_HOST'),
+            'PORT': '',
+        }
+       
+    }
+# production
+else:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=config('DATABASE_URL')
+    )
+}
+```
+Then in your .env file change mode to 'dev' and debug to True as shown:
+```python
+SECRET_KEY='342s(s(!hsjd998sde8$=o4$3m!(o+kce2^97kp6#ujhi'
+DEBUG=True 
+DB_NAME='tribune'
+DB_USER='user'
+DB_PASSWORD='password'
+DB_HOST='127.0.0.1'
+MODE='dev' 
+ALLOWED_HOSTS='.localhost', '.herokuapp.com', '.127.0.0.1'  #Set ALLOWED_HOSTS='.herokuapp.com' in production
+DISABLE_COLLECTSTATIC=1
+```
 # Lets deploy now
 First make sure you are in the root directory of the repository you want to deploy
 
@@ -337,9 +396,18 @@ Remember to first set `DEBUG` to false and confirm that you have added all the c
 confirm that your application is running as expected before pushing, runtime errors will cause deployment to fail so make sure you have no bugs, you have all the following `Procfile`, `requirements.txt` with all required packages and  `runtime.txt` .
 
 ```bash
+git add .
+git commit -m "Deployment to heroku"
 git push heroku master
 ```
-If you did everything correctly then the deployment should be done after a while with an output like this
+Incase of an access rights error run the following command before pushing to heroku to add the remote:
+```bash
+heroku git:remote -a mtr1bune
+```
+where mtr1bune is your heroku application name.
+
+If you did everything correctly then the deployment should be done after a while with an output like this:
+
 
 ```bash
 Enumerating objects: 94, done.
