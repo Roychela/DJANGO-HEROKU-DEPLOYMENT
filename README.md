@@ -34,7 +34,7 @@ Create a file named `Procfile` in the project root with the following content:
 ```
 web: gunicorn your_project_name.wsgi --log-file -
 ```
-E.g
+In our case it would be:
 ```
 web: gunicorn tribune.wsgi --log-file -
 ```
