@@ -361,7 +361,7 @@ DB_USER='user'
 DB_PASSWORD='password'
 DB_HOST='127.0.0.1'
 MODE='dev' 
-ALLOWED_HOSTS='.localhost', '.herokuapp.com', '.127.0.0.1'  #Set ALLOWED_HOSTS='.herokuapp.com' in production
+ALLOWED_HOSTS='.localhost', '.herokuapp.com', '.127.0.0.1'  
 DISABLE_COLLECTSTATIC=1
 ```
 # Lets deploy now
