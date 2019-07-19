@@ -385,7 +385,7 @@ Next add all the environment vaiables, by default you should have `DATABASE_URI`
 Alternatively you can add all your configurations in `.env` file directly to heroku by running the this command.
 
 ```bash
-heroku config:set $(cat .env | sed '/^$/d; /#[[:print:]]*$/d')
+heroku config:set $(cat .env | sed '/^$/d; /#[[:print:]]*$/d') --app mtr1bune
 ```
 Remember to first set `DEBUG` to false and confirm that you have added all the confuguration variables needed.
 
